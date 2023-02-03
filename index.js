@@ -32,13 +32,6 @@ app.get('/', (req, res) => {
 // middleware function to serve static files
 app.use(express.static('public'));
 
-// INTENTIONAL ERROR to see how the error funciton below works
-app.get('/error', (req, res, next) => {
-  const error = new Error('Intentional Error');
-  error.status = 400;
-  next(error);
-});
-
 // last middleware function to handle all errors
 app.use((err, req, res, next) => {
   console.error(err.stack);
