@@ -5,15 +5,129 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Movies</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../dist/styles.css" />
   </head>
+
   <body>
-    <h1>Movie Api</h1>
-    <p>
-      Description: "To build the server-side component of a “movies” web
-      application. The web application will provide users with access to
-      information about different movies, directors, and genres. Users will be
-      able to sign up, update their personal information, and create a list of
-      their favorite movies."
-    </p>
+    <div>
+      <h1>My Movie-API</h1>
+      <h2>Objective</h2>
+      <p>
+        To build the server-side component of a movies web application. The web
+        application will provide users with the access to informaion about
+        different movies, directors, and genres. Users will be able to sign up,
+        update their personal information, and create a list of their favorite
+        movies.
+      </p>
+    </div>
+
+    <div>
+      <h2>Features</h2>
+      <li>Return a list of ALL movies to the user.</li>
+      <li>Return data about a single movie by title to the user.</li>
+      <li>Return data about a genre by name/title (e.g., “Thriller”).</li>
+      <li>
+        Return data about a director (bio, birth year, death year) by name.
+      </li>
+      <li>Allow new users to register.</li>
+      <li>Allow users to update their user info (username).</li>
+      <li>Allow users to add a movie to their list of favorites.</li>
+      <li>Allow users to remove a movie from their list of favorites.</li>
+      <li>Allow existing users to deregister.</li>
+    </div>
+
+    <container id="table-content">
+      <table class="table table-ligt table-sm table-bordered">
+        <thead class="thead-dark">
+          <tr>
+            <th>Request</th>
+            <th>URL</th>
+            <th>Response</th>
+          </tr>
+        </thead>
+        <tbody class="table-striped tbody-light">
+          <tr>
+            <td>GET</td>
+            <td>/movies</td>
+            <td>Returns a list of all movies in the database</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/movies</td>
+            <td>Adds a new movie to the database</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/movies/{id}</td>
+            <td>
+              Returns the details of a specific movie, identified by its id
+            </td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/movies/{id}</td>
+            <td>
+              Updates the details of a specific movie, identified by its id
+            </td>
+          </tr>
+          <tr>
+            <td>DELETE</td>
+            <td>/movies/{id}</td>
+            <td>Deletes a specific movie, identified by its id</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/users</td>
+            <td>Returns a list of all users in the database</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/users</td>
+            <td>Adds a new user to the database</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/users/{id}</td>
+            <td>
+              Returns the details of a specific user, identified by its id
+            </td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/users/{id}</td>
+            <td>
+              Updates the details of a specific user, identified by its id
+            </td>
+          </tr>
+          <tr>
+            <td>DELETE</td>
+            <td>/users/{id}</td>
+            <td>Deletes a specific user, identified by its id</td>
+          </tr>
+        </tbody>
+      </table>
+    </container>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../dist/all.js"></script>
   </body>
 </html>
