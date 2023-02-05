@@ -46,7 +46,7 @@
       <table class="table table-ligt table-sm table-bordered">
         <thead class="thead-dark">
           <tr>
-            <th>Request</th>
+            <th>Method</th>
             <th>URL</th>
             <th>Response</th>
           </tr>
@@ -55,26 +55,22 @@
           <tr>
             <td>GET</td>
             <td>/movies</td>
-            <td>Returns a list of all movies from the database</td>
+            <td>Get all movies</td>
           </tr>
           <tr>
-            <td>POST</td>
-            <td>/movies</td>
-            <td>Adds a new movie to the database</td>
+            <td>GET</td>
+            <td>/movies/:title</td>
+            <td>Get movie by title</td>
           </tr>
           <tr>
             <td>GET</td>
             <td>/movies/{id}</td>
-            <td>
-              Returns the details of a specific movie, identified by its id
-            </td>
+            <td>Get genre by name/title</td>
           </tr>
           <tr>
-            <td>PUT</td>
-            <td>/movies/{id}</td>
-            <td>
-              Updates the details of a specific movie, identified by its id
-            </td>
+            <td>GET</td>
+            <td>/directors/:name</td>
+            <td>Get director by name</td>
           </tr>
           <tr>
             <td>DELETE</td>
@@ -82,33 +78,29 @@
             <td>Deletes a specific movie, identified by its id</td>
           </tr>
           <tr>
-            <td>GET</td>
-            <td>/users</td>
-            <td>Returns a list of all users in the database</td>
-          </tr>
-          <tr>
             <td>POST</td>
             <td>/users</td>
-            <td>Adds a new user to the database</td>
-          </tr>
-          <tr>
-            <td>GET</td>
-            <td>/users/{id}</td>
-            <td>
-              Returns the details of a specific user, identified by its id
-            </td>
+            <td>Register new user</td>
           </tr>
           <tr>
             <td>PUT</td>
-            <td>/users/{id}</td>
-            <td>
-              Updates the details of a specific user, identified by its id
-            </td>
+            <td>/users/:id</td>
+            <td>Update user info</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/users/:id/favorites/:movie_id</td>
+            <td>Add movie to favorites</td>
           </tr>
           <tr>
             <td>DELETE</td>
-            <td>/users/{id}</td>
-            <td>Deletes a specific user, identified by its id</td>
+            <td>/users/:id/favorites/:movie_id</td>
+            <td>Remove movie from favorites</td>
+          </tr>
+          <tr>
+            <td>DELETE</td>
+            <td>/users/:id</td>
+            <td>Deregister user</td>
           </tr>
         </tbody>
       </table>
