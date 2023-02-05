@@ -7,6 +7,9 @@ const app = express();
 // logs the requests
 app.use(morgan('common'));
 
+// middleware function to serve static files
+app.use(express.static('public'));
+
 // Create a GET route for "/movies"
 app.get('/movies', (req, res) => {
   const topMovies = [
@@ -40,5 +43,5 @@ app.use((err, req, res, next) => {
 
 const port = 3000;
 app.listen(port, () => {
-  console.log('Server running at http://localhost:${port}');
+  console.log('Server running at http://localhost:3000');
 });
