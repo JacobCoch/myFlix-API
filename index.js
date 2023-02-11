@@ -28,17 +28,21 @@ let users = [
 
 let movies = [
   {
-    Title: 'Every thing everywhere all at once',
+    Title: 'Everything everywhere all at once',
     Year: 2022,
     Description:
       'A film about a group of scientists trying to save humanity from an impending disaster',
+    Rating: 8,
     Genre: {
       Name: 'Sci-Fi',
       Description:
         'A genre of speculative fiction dealing with imaginative and futuristic concepts, typically involving science and technology',
     },
     Director: {
-      Name: 'John Doe',
+      Name: 'Daniel kwan',
+      Bio: 'Daniel Kwan is a filmmaker and writer born in 1984 in Los Angeles, best known as one half of the directing duo "The Daniels" with Daniel Scheinert, who gained recognition for their unique visual style and imaginative storytelling, and have directed numerous music videos, commercials, and short films.',
+      Birthyear: 1984,
+      Deathyear: '--',
     },
   },
   {
@@ -46,6 +50,7 @@ let movies = [
     Year: 2014,
     Description:
       'A story of a group of astronauts who travel through a wormhole in search of a new home for humanity',
+    Rating: 8.6,
     Genre: {
       Name: 'Sci-Fi',
       Description:
@@ -53,6 +58,9 @@ let movies = [
     },
     Director: {
       Name: 'Christopher Nolan',
+      Bio: 'Christopher Nolan is a British-American film director, producer, and screenwriter. He is known for his unique storytelling style, often involving time and perception, and has directed several critically acclaimed and commercially successful films, including Memento, The Dark Knight, and Inception.',
+      Birthyear: 1970,
+      Deathyear: '--',
     },
   },
   {
@@ -60,6 +68,7 @@ let movies = [
     Year: 2002,
     Description:
       'The second installment in The Lord of the Rings trilogy, following hobbits, elves, and men as they continue their quest to destroy the One Ring and defeat the dark lord Sauron',
+    Rating: 8.7,
     Genre: {
       Name: 'Fantasy',
       Description:
@@ -67,6 +76,9 @@ let movies = [
     },
     Director: {
       Name: 'Peter Jackson',
+      Bio: 'Peter Jackson is a New Zealand film director, producer, and screenwriter. He is best known for his epic adaptations of J.R.R. Tolkiens The Lord of the Rings and The Hobbit novels, which have won numerous awards and critical acclaim.',
+      Birthyear: 1961,
+      Deathyear: '--',
     },
   },
   {
@@ -74,6 +86,7 @@ let movies = [
     Year: 2010,
     Description:
       'A mind-bending thriller about a group of thieves who enter the subconscious of their targets to steal their secrets',
+    Rating: 8.8,
     Genre: {
       Name: 'Sci-Fi',
       Description:
@@ -81,6 +94,9 @@ let movies = [
     },
     Director: {
       Name: 'Christopher Nolan',
+      Bio: 'Christopher Nolan is a British-American film director, producer, and screenwriter. He is known for his unique storytelling style, often involving time and perception, and has directed several critically acclaimed and commercially successful films, including Memento, The Dark Knight, and Interstellar.',
+      Birthyear: 1970,
+      Deathyear: '--',
     },
   },
   {
@@ -88,6 +104,7 @@ let movies = [
     Year: 1999,
     Description:
       'A classic sci-fi action film about a hacker who discovers that the world around him is a simulated reality created by sentient machines',
+    Rating: 8.7,
     Genre: {
       Name: 'Sci-Fi',
       Description:
@@ -95,6 +112,9 @@ let movies = [
     },
     Director: {
       Name: 'The Wachowski Brothers',
+      Bio: 'Lana Wachowski and Lilly Wachowski, known together professionally as the Wachowskis, are American film and television directors, writers, and producers. They are best known for creating The Matrix franchise, as well as other critically acclaimed works like Cloud Atlas and Sense8.',
+      Birthyear: 1965,
+      Deathyear: '--',
     },
   },
   {
@@ -102,6 +122,7 @@ let movies = [
     Year: 2000,
     Description:
       'An epic historical drama about a Roman general who becomes a slave and rises to prominence as a gladiator in ancient Rome',
+    Rating: 8.5,
     Genre: {
       Name: 'Action',
       Description:
@@ -109,6 +130,9 @@ let movies = [
     },
     Director: {
       Name: 'Ridley Scott',
+      Bio: 'Ridley Scott is an English film director and producer known for his visually stunning and thematically rich films. He has directed numerous critically acclaimed movies, including Alien, Blade Runner, and Gladiator, and has received several Academy Award nominations throughout his career.',
+      Birthyear: 1937,
+      Deathyear: '--',
     },
   },
   {
@@ -116,6 +140,7 @@ let movies = [
     Year: 2018,
     Description:
       'An animated film about a young man named Miles Morales who discovers he has spider powers and joins other versions of Spider-Man from different dimensions to stop a threat to all of their realities',
+    Rating: 8.4,
     Genre: {
       Name: 'Animation',
       Description:
@@ -123,6 +148,9 @@ let movies = [
     },
     Director: {
       Name: 'Bob Persichetti, Peter Ramsey, and Rodney Rothman',
+      Bio: 'Bob Persichetti, Peter Ramsey, and Rodney Rothman are American film directors and screenwriters. They are known for their work on Spider-Man: Into the Spider-Verse, which won the Academy Award for Best Animated Feature in 2019.',
+      Birthyear: '--',
+      Deathyear: '--',
     },
   },
   {
