@@ -158,6 +158,7 @@ let movies = [
     Year: 2010,
     Description:
       'A sci-fi movie set in a virtual world where a man has to save his father from an evil program',
+    Rating: 6.8,
     Genre: {
       Name: 'Sci-Fi',
       Description:
@@ -165,6 +166,9 @@ let movies = [
     },
     Director: {
       Name: 'Joseph Kosinski',
+      Bio: 'Joseph Kosinski is a director whose uncompromising style has quickly made a mark in the filmmaking zeitgeist. His feature film debut, "Tron: Legacy" for Walt Disney Studios, grossed over $400 million worldwide',
+      Birthyear: 1974,
+      Deathyear: '--',
     },
   },
   {
@@ -172,6 +176,7 @@ let movies = [
     Year: 2008,
     Description:
       'A superhero movie about the Dark Knight aka Batman, as he tries to stop the Joker from wreaking havoc on Gotham City',
+    Rating: 9,
     Genre: {
       Name: 'Action',
       Description:
@@ -179,6 +184,9 @@ let movies = [
     },
     Director: {
       Name: 'Christopher Nolan',
+      Bio: 'Christopher Nolan is a British-American film director, producer, and screenwriter. He is known for his unique storytelling style, often involving time and perception, and has directed several critically acclaimed and commercially successful films, including Memento, The Dark Knight, and Inception.',
+      Birthyear: 1970,
+      Deathyear: '--',
     },
   },
   {
@@ -186,6 +194,7 @@ let movies = [
     Year: 1994,
     Description:
       'A drama movie about a slow-witted man who ends up becoming involved in some of the major events of the 20th century',
+    Rating: 8.8,
     Genre: {
       Name: 'Drama',
       Description:
@@ -193,6 +202,9 @@ let movies = [
     },
     Director: {
       Name: 'Robert Zemeckis',
+      Bio: 'Robert Zemeckis is an American film director, producer, and screenwriter, born on May 14, 1951, in Chicago, Illinois. He is best known for directing and co-writing several critically acclaimed and commercially successful films.',
+      Birthyear: 1951,
+      Deathyear: '--',
     },
   },
 ];
