@@ -1,0 +1,5 @@
+{"_id":{"$oid":"63f9531a0ffad218259a73d8"},"Name":"Drama","Description":"A genre that deals with serious and important human experiences and relationships, often emphasizing emotional and psychological development"}
+{"_id":{"$oid":"63f9531a0ffad218259a73d9"},"Name":"Action","Description":"A genre that involves physically thrilling and fast-paced scenes often with hand-to-hand combat or chase scenes"}
+{"_id":{"$oid":"63f9531a0ffad218259a73da"},"Name":"Sci-Fi","Description":"A genre that often involves futuristic and technologically advanced science or science fiction elements"}
+{"_id":{"$oid":"63f9531a0ffad218259a73db"},"Name":"Animation","Description":"A genre that encompasses motion pictures created using animation techniques, such as hand-drawn, computer, or stop-motion animation"}
+{"_id":{"$oid":"63f9531a0ffad218259a73dc"},"Name":"Fantasy","Description":"A genre that encompasses imaginative and fantastic stories, typically featuring mythical creatures and magic"}
