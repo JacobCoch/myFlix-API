@@ -12,7 +12,7 @@ const app = express();
 
 main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/test');
+  await mongoose.connect('mongodb://127.0.0.1:27017/mymovieapp');
 }
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -20,8 +20,6 @@ app.use(bodyParser.json());
 
 // logs the requests
 app.use(morgan('common'));
-
-// middleware function to serve static files
 app.use(express.static('dist'));
 
 // READ
@@ -41,33 +39,26 @@ app.get('/movies', (req, res) => {
 });
 
 // READ
-app.get('/movies/:title', (req, res) => {
-  const { title } = req.params;
-  const movie = movies.find((movie) => movie.Title === title);
-
-  if (movie) {
-    res.status(200).json(movie);
-  } else {
-    res.status(400).send('no such movie');
-  }
+app.get('/movies/:Title', (req, res) => {
+  Movies.findOne({ Title: req.params.Title })
+    .then((movie) => {
+      res.json(movie);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    });
 });
 
 // READ
 app.get('/movies/genre/:genreName', (req, res) => {
-  const { genreName } = req.params;
-  const genre = movies.find((movie) => movie.Genre.Name === genreName).Genre;
-
-  if (genre) {
-    res.status(200).json(genre);
-  } else {
-    res.status(400).send('no such genre');
-  }
+  Movies.findOne({});
 });
 
 // READ
 app.get('/movies/directors/:directorName', (req, res) => {
   const { directorName } = req.params;
-  const director = movies.find(
+  const director = Movies.find(
     (movie) => movie.Director.Name === directorName
   ).Director;
 
@@ -107,7 +98,7 @@ app.put('/users/:id', (req, res) => {
   const { id } = req.params;
   const updatedUser = req.body;
 
-  const user = users.find((user) => user.id == id);
+  const user = Users.find((user) => user.id == id);
 
   if (user) {
     user.name = updatedUser.name;
@@ -140,7 +131,7 @@ app.put('/users/:Username', (req, res) => {
 app.post('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
-  const user = users.find((user) => user.id == id);
+  const user = Users.find((user) => user.id == id);
 
   if (user) {
     user.favoriteMovies.push(movieTitle);
@@ -199,7 +190,7 @@ app.post('/users/:Username/movies/:MovieID', (req, res) => {
 app.delete('/users/:id/:movieTitle', (req, res) => {
   const { id, movieTitle } = req.params;
 
-  const user = users.find((user) => user.id == id);
+  const user = Users.find((user) => user.id == id);
 
   if (user) {
     user.favoriteMovies = user.favoriteMovies.filter(
@@ -217,7 +208,7 @@ app.delete('/users/:id/:movieTitle', (req, res) => {
 app.delete('/users/:id', (req, res) => {
   const { id } = req.params;
 
-  const user = users.find((user) => user.id == id);
+  const user = Users.find((user) => user.id == id);
 
   if (user) {
     users = users.filter((user) => user.id !== id);
