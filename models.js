@@ -4,13 +4,16 @@ const mongoose = require('mongoose');
 // Here you are describing the schema from mongoose
 const movieSchema = mongoose.Schema({
   Title: { type: String, required: true },
-  Genre: {
-    Name: String,
-    Description: String,
-  },
+  Year: { type: Number },
+  Description: { type: String },
+  Rating: { type: Number },
   Director: {
     Name: String,
     Bio: String,
+  },
+  Genre: {
+    Name: String,
+    Description: String,
   },
   Actors: [String],
   ImagePath: String,
