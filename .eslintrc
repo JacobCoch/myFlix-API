@@ -1,5 +1,6 @@
 {
   "extends": ["prettier"],
+  "rules": { "prefer-const": ["error"] },
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
