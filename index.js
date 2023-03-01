@@ -2,18 +2,12 @@
 const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
-const uuid = require('uuid');
 const mongoose = require('mongoose');
 const Models = require('./models');
 
 const Movies = Models.Movie;
 const Users = Models.User;
 const app = express();
-
-main().catch((err) => console.log(err));
-async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/mymovieapp');
-}
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -22,27 +16,46 @@ app.use(bodyParser.json());
 app.use(morgan('common'));
 app.use(express.static('dist'));
 
+// This connects mongoose to mongodb database
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect('mongodb://127.0.0.1:27017/newmoviedb');
+  console.log('connected');
+}
+
 // READ
 app.get('/', (req, res) => {
-  res.send('Welcome to mymovieapp');
+  res.sendFile('public/documentation.html', { root: __dirname });
 });
 
-app.get('/movies', (req, res) => {
-  Movies.find()
-    .then((movies) => {
-      res.status(201).json(movies);
-    })
-    .catch((err) => {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    });
+app.get('/movies', async (req, res) => {
+  try {
+    const movies = await Movies.find();
+    res.status(201).json(movies);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  }
 });
 
 // READ
-app.get('/movies/:Title', (req, res) => {
-  Movies.findOne({ Title: req.params.Title })
-    .then((movie) => {
-      res.json(movie);
+app.get('/movies/:Title', async (req, res) => {
+  try {
+    const movie = await Movies.findOne({ Title: req.params.Title });
+    res.status(201).json(movie);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
+  }
+});
+
+app.get('/movies/genres', async (req, res) => {
+  try { 
+    const genre = await Movies.find
+  }
+  Movies.find()
+    .then((genre) => {
+      res.json(genre);
     })
     .catch((err) => {
       console.error(err);
@@ -142,31 +155,24 @@ app.post('/users/:id/:movieTitle', (req, res) => {
 });
 
 // CREATE
-app.post('/users', (req, res) => {
-  Users.findOne({ Username: req.body.Username })
-    .then((user) => {
-      if (user) {
-        return res.status(400).send(req.body.Username + 'already exists');
-      } else {
-        Users.create({
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        })
-          .then((user) => {
-            res.status(201).json(user);
-          })
-          .catch((error) => {
-            console.error(error);
-            res.status(500).send('Error: ' + error);
-          });
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-      res.status(500).send('Error: ' + error);
-    });
+app.post('/users', async (req, res) => {
+  try {
+    const user = await Users.findOne({ Username: req.body.Username });
+    if (user) {
+      return res.status(400).send(req.body.Username + ' already exists');
+    } else {
+      const newUser = await Users.create({
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      });
+      res.status(201).json(newUser);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error: ' + error);
+  }
 });
 
 // Add a movie to a user's list of favorites
