@@ -1,7 +1,7 @@
 // First you need to require mongoose from node
 const mongoose = require('mongoose');
 
-// Here you are describing the schema from mongoose
+// This is the movieSchema
 const movieSchema = mongoose.Schema({
   Title: { type: String, required: true },
   Year: { type: Number },
