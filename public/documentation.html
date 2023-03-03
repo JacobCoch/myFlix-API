@@ -55,52 +55,66 @@
           <tr>
             <td>GET</td>
             <td>/movies</td>
-            <td>Get all movies</td>
+            <td>This would return a json object of all movies</td>
           </tr>
           <tr>
             <td>GET</td>
-            <td>/movies/:title</td>
-            <td>Get movie by title</td>
+            <td>/movies/:Title</td>
+            <td>This would return data in json about the movie</td>
           </tr>
           <tr>
             <td>GET</td>
-            <td>/movies/{id}</td>
-            <td>Get genre by name/title</td>
+            <td>/movies/genre/:Name</td>
+            <td>This would return data in json about the genre</td>
           </tr>
           <tr>
             <td>GET</td>
-            <td>/directors/:name</td>
-            <td>Get director by name</td>
+            <td>/movies/directors/:name</td>
+            <td>This would return data in json about the director</td>
           </tr>
           <tr>
-            <td>DELETE</td>
-            <td>/movies/{id}</td>
-            <td>Deletes a specific movie, identified by its id</td>
+            <td>GET</td>
+            <td>/users</td>
+            <td>This would return data in json about all users</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/users/:Username</td>
+            <td>This would return data in json about a specific user</td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/users/:Username</td>
+            <td>
+              This would return data in json about what data in the document
+              should be updated
+            </td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/users/:Username/:Title</td>
+            <td>
+              This would return data in json about what movies were added to the
+              user
+            </td>
           </tr>
           <tr>
             <td>POST</td>
             <td>/users</td>
-            <td>Register new user</td>
-          </tr>
-          <tr>
-            <td>PUT</td>
-            <td>/users/:id</td>
-            <td>Update user info</td>
-          </tr>
-          <tr>
-            <td>POST</td>
-            <td>/users/:id/favorites/:movie_id</td>
-            <td>Add movie to favorites</td>
+            <td>This would return data in json about what user was created</td>
           </tr>
           <tr>
             <td>DELETE</td>
-            <td>/users/:id/favorites/:movie_id</td>
-            <td>Remove movie from favorites</td>
+            <td>/users/:Username/:Title</td>
+            <td>
+              This would return data in json about what movie was deleted from a
+              users favorite movies
+            </td>
           </tr>
           <tr>
             <td>DELETE</td>
-            <td>/users/:id</td>
-            <td>Deregister user</td>
+            <td>/users/:Username</td>
+            <td>This would return data in json about what user was deleted</td>
           </tr>
         </tbody>
       </table>
