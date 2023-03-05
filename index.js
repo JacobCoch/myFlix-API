@@ -11,12 +11,11 @@ const Users = Models.User;
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-
-// logs the requests
-app.use(morgan('common'));
-app.use(express.static('dist'));
+// MIDDLEWARE
+app.use(bodyParser.urlencoded({ extended: true })); // handles urlencoded data
+app.use(bodyParser.json()); // handles json encoded data
+app.use(morgan('common')); // logs the requests to the console
+app.use(express.static('dist')); // serves static files from 'dist' directory
 
 // This connects mongoose to mongodb database
 main().catch((err) => console.log(err));
