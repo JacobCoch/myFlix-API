@@ -1,11 +1,11 @@
-const passport = require('passport'),
-  LocalStrategy = require('passport-local').Strategy,
-  Models = require('./models'),
-  passportJWT = require('passport-jwt');
+const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+const Models = require('./models');
+const passportJWT = require('passport-jwt');
 
-const Users = Models.User,
-  JWTStrategy = passportJWT.Strategy,
-  ExtractJWT = passportJWT.ExtractJwt;
+const Users = Models.User;
+const JWTStrategy = passportJWT.Strategy;
+const ExtractJWT = passportJWT.ExtractJwt;
 
 // Strategy #1 LocalStrategy, defines you basic HTTP authentication for login requests
 passport.use(
@@ -15,19 +15,27 @@ passport.use(
       passwordField: 'Password',
     },
     (username, password, callback) => {
-      console.log(username + ' ' + password);
+      console.log('Login Attempt: ' + username);
       Users.findOne({ Username: username }, (error, user) => {
-        // mongoose to check DB if username exists NOT THE PASSWORD
         if (error) {
           console.log(error);
           return callback(error);
         }
+
         if (!user) {
           console.log('incorrect username');
           return callback(null, false, {
-            message: 'Incorrect username or password.',
+            message: 'Incorrect username.',
           });
         }
+
+        if (!user.validatePassword(password)) {
+          console.log('incorrect password');
+          return callback(null, false, {
+            message: 'Incorrect password.',
+          });
+        }
+
         console.log('finished');
         return callback(null, user);
       });
@@ -39,7 +47,7 @@ passport.use(
 passport.use(
   new JWTStrategy(
     {
-      jewtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
       secretOrKey: 'your_jwt_secret',
     },
     async (jwtPayload, callback) => {
