@@ -17,6 +17,11 @@ app.use(bodyParser.json()); // handles json encoded data
 app.use(morgan('common')); // logs the requests to the console
 app.use(express.static('dist')); // serves static files from 'dist' directory
 
+// Require passport module and import passport.js file
+const auth = require('./auth')(app);
+const passport = require('passport'); // module
+require('./passport');
+
 // This connects mongoose to mongodb database
 main().catch((err) => console.log(err));
 async function main() {
@@ -30,15 +35,19 @@ app.get('/', (req, res) => {
 });
 
 // GET all movies
-app.get('/movies', async (req, res) => {
-  try {
-    const movies = await Movies.find();
-    res.status(201).json(movies);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error: ' + err);
+app.get(
+  '/movies',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const movies = await Movies.find();
+      res.status(201).json(movies);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
   }
-});
+);
 
 // GET movie by title
 app.get('/movies/:Title', async (req, res) => {
