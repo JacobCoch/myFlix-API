@@ -9,7 +9,7 @@ const Models = require('./models');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-const app = express();
+const app = express(); // express module
 
 // MIDDLEWARE
 app.use(bodyParser.urlencoded({ extended: true })); // handles urlencoded data
