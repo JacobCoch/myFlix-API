@@ -1,7 +1,6 @@
 {
   "name": "movie-api",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -33,5 +32,7 @@
     "eslint-config-prettier": "^8.7.0",
     "nodemon": "^2.0.21",
     "prettier": "^2.8.4"
-  }
+  },
+  "keywords": [],
+  "description": ""
 }
