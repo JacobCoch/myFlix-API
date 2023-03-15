@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 // GET all movies
 app.get(
   '/movies',
-
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
       const movies = await Movies.find();
@@ -192,29 +192,25 @@ app.post(
 );
 
 // POST, creates a new user
-app.post(
-  '/users',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res) => {
-    try {
-      const user = await Users.findOne({ Username: req.body.Username });
-      if (user) {
-        return res.status(400).send(req.body.Username + ' already exists');
-      } else {
-        const newUser = await Users.create({
-          Username: req.body.Username,
-          Password: req.body.Password,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
-        });
-        res.status(201).json(newUser);
-      }
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
+app.post('/users', async (req, res) => {
+  try {
+    const user = await Users.findOne({ Username: req.body.Username });
+    if (user) {
+      return res.status(400).send(req.body.Username + ' already exists');
+    } else {
+      const newUser = await Users.create({
+        Username: req.body.Username,
+        Password: req.body.Password,
+        Email: req.body.Email,
+        Birthday: req.body.Birthday,
+      });
+      res.status(201).json(newUser);
     }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error: ' + err);
   }
-);
+});
 
 // DELETE movie from favorite list
 app.delete(
