@@ -1,4 +1,0 @@
-{"_id":{"$oid":"63f94cc20ffad218259a73cb"},"username":"johndoe","password":"password123","email":"johndoe@example.com","birthday":"1984-03-28","favoriteMovies":[{"$oid":"63f948420ffad218259a73c4"},{"$oid":"63f948680ffad218259a73c5"}]}
-{"_id":{"$oid":"63f94cc20ffad218259a73cc"},"username":"janedoe","password":"password456","email":"janedoe@example.com","birthday":"1984-03-28"}
-{"_id":{"$oid":"63f94cc20ffad218259a73cd"},"username":"bobsmith","password":"password789","email":"bobsmith@example.com","birthday":"1984-03-28"}
-{"_id":{"$oid":"63f94cc20ffad218259a73ce"},"username":"sallyjones","password":"password101","email":"sallyjones@example.com","birthday":"1984-03-28","favoriteMovies":[{"$oid":"63f947f60ffad218259a73c1"},{"$oid":"63f9480f0ffad218259a73c2"}]}
