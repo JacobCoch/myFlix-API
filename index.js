@@ -49,7 +49,6 @@ async function main() {
   await mongoose.connect('mongodb://127.0.0.1:27017/newmoviedb');
   console.log('connected');
 }
-
 // READ
 app.get('/', (req, res) => {
   res.sendFile('public/documentation.html', { root: __dirname });
@@ -236,8 +235,7 @@ app.post(
       console.error(err);
       res.status(500).send('Error: ' + err);
     }
-  }
-);
+});
 
 // DELETE movie from favorite list
 app.delete(
@@ -294,7 +292,7 @@ app.delete(
 );
 
 // LISTEN
-const port = 27017;
+const port = 8080;
 app.listen(port, () => {
-  console.log('Server running at http://localhost:27017');
+  console.log('Server running at http://localhost:8080');
 });
