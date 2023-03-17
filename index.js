@@ -17,6 +17,27 @@ app.use(bodyParser.json()); // handles json encoded data
 app.use(morgan('common')); // logs the requests to the console
 app.use(express.static('dist')); // serves static files from 'dist' directory
 
+// CORS
+const cors = require('cors');
+
+// CORS origins
+const allowedOrigins = ['http://localhost:27017'];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn't found on the list of allowed origins
+        const message =
+          'The CORS policy for this application doesnt allow acces from origin ' +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
 // Require passport module and import passport.js file
 const auth = require('./auth')(app);
 const passport = require('passport'); // module
@@ -197,6 +218,7 @@ app.post(
   '/users',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
+    const hashedPassword = Users.hashedPassword(req.body.Password);
     try {
       const user = await Users.findOne({ Username: req.body.Username });
       if (user) {
