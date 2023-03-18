@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Models = require('./models');
+const { check, validationResult } = require('express-validator');
 
 // import schema models
 const Movies = Models.Movie;
@@ -215,11 +216,25 @@ app.post(
 // POST, creates a new user
 app.post(
   '/users',
+  [
+    check('Username', 'Username is required.').isLength({ min: 5 }),
+    check(
+      'username',
+      'Username contains non alphanumeric characters - not allowed.'
+    ).isAlphanumeric(),
+    check('Username', 'Username cannot be empty.').notEmpty(),
+    check('Password', 'Password is required.').notEmpty(),
+    check('Email', 'Email does not appear to be valid.').isEmail(),
+  ],
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    const hashedPassword = Users.hashedPassword(req.body.Password);
     try {
+      const errors = validationResult(req);
+      const hashedPassword = await Users.hashPassword(req.body.Password);
       const user = await Users.findOne({ Username: req.body.Username });
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+      }
       if (user) {
         return res.status(400).send(req.body.Username + ' already exists');
       } else {
@@ -235,7 +250,8 @@ app.post(
       console.error(err);
       res.status(500).send('Error: ' + err);
     }
-});
+  }
+);
 
 // DELETE movie from favorite list
 app.delete(
@@ -292,7 +308,7 @@ app.delete(
 );
 
 // LISTEN
-const port = 8080;
-app.listen(port, () => {
-  console.log('Server running at http://localhost:8080');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
 });
