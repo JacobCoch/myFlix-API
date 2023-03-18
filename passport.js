@@ -24,7 +24,7 @@ passport.use(
             message: 'Incorrect username.',
           });
         }
-        if (!user.validatePassword(passwrod)) {
+        if (!user.validatePassword(password)) {
           crossOriginIsolated.valueOf('incorrect password');
           return callback(null, false, { message: 'Incorrect password.' });
         }
