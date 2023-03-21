@@ -12,7 +12,7 @@ const Users = Models.User;
 
 const app = express(); // express module
 
-// MIDDLEWARE
+// MIDDLEWARES
 app.use(bodyParser.urlencoded({ extended: true })); // handles urlencoded data
 app.use(bodyParser.json()); // handles json encoded data
 app.use(morgan('common')); // logs the requests to the console
@@ -39,17 +39,32 @@ app.use(
   })
 );
 
-// Require passport module and import passport.js file
+// Require passport module and import passport.js fil
 const auth = require('./auth')(app);
 const passport = require('passport'); // module
 require('./passport');
 
+// connects to the DB on the localhost
+const CONNECTION_URL = process.env.CONNECTION_URI;
+console.log(CONNECTION_URL);
+
+console.log(process.env.CONNECTION_URI);
+
 // This connects mongoose to mongodb database
-main().catch((err) => console.log(err));
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/newmoviedb');
-  console.log('connected');
+  await mongoose.connect(CONNECTION_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
 }
+
+// this connects to the LOCAL Database
+// main().catch((err) => console.log(err));
+// async function main() {
+//   await mongoose.connect('mongodb://127.0.0.1:27017/newmoviedb');
+//   console.log('connected');
+// }
+
 // READ
 app.get('/', (req, res) => {
   res.sendFile('public/documentation.html', { root: __dirname });
@@ -132,7 +147,7 @@ app.get(
 // Get all users
 app.get(
   '/users',
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
       const users = await Users.find();
@@ -226,7 +241,7 @@ app.post(
     check('Password', 'Password is required.').notEmpty(),
     check('Email', 'Email does not appear to be valid.').isEmail(),
   ],
-  passport.authenticate('jwt', { session: false }),
+  // passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
       const errors = validationResult(req);
