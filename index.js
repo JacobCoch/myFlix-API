@@ -248,10 +248,12 @@ app.post(
     try {
       const errors = validationResult(req);
       const hashedPassword = await Users.hashPassword(req.body.Password);
+      console.log(req.body.Password);
       const user = await Users.findOne({ Username: req.body.Username });
       if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
       }
+      console.log(errors);
       if (user) {
         return res.status(400).send(req.body.Username + ' already exists');
       } else {
