@@ -147,7 +147,7 @@ app.get(
 // Get all users
 app.get(
   '/users',
-  // passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
       const users = await Users.find();
@@ -241,7 +241,7 @@ app.post(
     check('Password', 'Password is required.').notEmpty(),
     check('Email', 'Email does not appear to be valid.').isEmail(),
   ],
-  // passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
       const errors = validationResult(req);
