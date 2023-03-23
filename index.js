@@ -48,14 +48,17 @@ require('./passport');
 const CONNECTION_URL = process.env.CONNECTION_URI;
 console.log(CONNECTION_URL);
 
-console.log(process.env.CONNECTION_URI);
-
 // This connects mongoose to mongodb database
 async function main() {
-  await mongoose.connect(CONNECTION_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  try {
+    await mongoose.connect(CONNECTION_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to database successfully!');
+  } catch (error) {
+    console.error('Failed to connect to database:', error);
+  }
 }
 
 // this connects to the LOCAL Database
@@ -241,7 +244,6 @@ app.post(
     check('Password', 'Password is required.').notEmpty(),
     check('Email', 'Email does not appear to be valid.').isEmail(),
   ],
-  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
       const errors = validationResult(req);
