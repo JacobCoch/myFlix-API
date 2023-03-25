@@ -44,17 +44,20 @@ const auth = require('./auth')(app);
 const passport = require('passport'); // module
 require('./passport');
 
-// connects to the DB on the localhost
-const CONNECTION_URL = process.env.CONNECTION_URI;
-console.log(CONNECTION_URL);
+// // connects to the DB on the localhost
+// const CONNECTION_URL = process.env.CONNECTION_URI;
+// console.log(CONNECTION_URL);
 
 // This connects mongoose to mongodb database
 async function main() {
   try {
-    await mongoose.connect(CONNECTION_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(
+      'mongodb+srv://jacobcoch:Malparido22@myflixdb.phuxd7i.mongodb.net/?retryWrites=true&w=majority',
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
     console.log('Connected to database successfully!');
   } catch (error) {
     console.error('Failed to connect to database:', error);
