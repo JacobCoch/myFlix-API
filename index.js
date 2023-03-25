@@ -255,7 +255,7 @@ app.post(
       if (user) {
         return res.status(400).send(req.body.Username + ' already exists');
       } else {
-        const newUser = await Users.create({
+        await Users.create({
           Username: req.body.Username,
           Password: hashedPassword,
           Email: req.body.Email,
