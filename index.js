@@ -261,8 +261,6 @@ app.post(
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         });
-        const token = generateJWTToken(newUser.toJSON());
-        return res.status(201).json({ user: newUser, token });
       }
     } catch (err) {
       console.error(err);
