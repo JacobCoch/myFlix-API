@@ -240,6 +240,10 @@ app.post(
   '/users',
   [
     check('Username', 'Username is required.').isLength({ min: 5 }),
+    check(
+      'username',
+      'Username contains non alphanumeric characters - not allowed.'
+    ).isAlphanumeric(),
     check('Username', 'Username cannot be empty.').notEmpty(),
     check('Password', 'Password is required.').notEmpty(),
     check('Email', 'Email does not appear to be valid.').isEmail(),
@@ -257,11 +261,12 @@ app.post(
       } else {
         const newUser = await Users.create({
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         });
-        res.status(201).json(newUser);
+        const token = generateJWTToken(newUser.toJSON());
+        return res.status(201).json({ user: newUser, token });
       }
     } catch (err) {
       console.error(err);
