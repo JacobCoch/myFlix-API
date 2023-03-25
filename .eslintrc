@@ -1,6 +1,31 @@
 {
-  "extends": ["prettier"],
-  "rules": { "prefer-const": ["error"] },
+  "extends": ["airbnb-base", "prettier"],
+  "rules": {
+    // Enforce consistent spacing before and after commas
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    // Enforce consistent use of curly braces in all control statements
+    "curly": ["error", "all"],
+    // Require default cases in switch statements
+    "default-case": "error",
+    // Enforce consistent dot notation whenever possible
+    "dot-notation": "error",
+    // Enforce consistent linebreaks before and after operators
+    "operator-linebreak": ["error", "before"],
+    // Disallow reassignment of function parameters
+    "no-param-reassign": ["error", { "props": true }],
+    // Disallow use of `alert`, `confirm`, and `prompt`
+    "no-alert": "error",
+    // Disallow use of `console` (useful in production)
+    "no-console": "error",
+    // Disallow leading/trailing space characters in regular expressions
+    "no-regex-spaces": "error",
+    // Disallow unused variables
+    "no-unused-vars": ["error", { "vars": "all", "args": "none" }],
+    // Require object keys to be sorted alphabetically
+    "sort-keys": ["error", "asc", { "naturalOrder": true }],
+    // Require variable declarations to be at the top of their scope
+    "vars-on-top": "error"
+  },
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
