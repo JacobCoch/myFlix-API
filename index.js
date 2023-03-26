@@ -6,13 +6,13 @@ const mongoose = require('mongoose');
 const Models = require('./models');
 const { check, validationResult } = require('express-validator');
 const passport = require('passport');
-const app = express(); // express module
-const cors = require('cors'); // cors module
+const app = express();
+const cors = require('cors');
 
 const auth = require('./auth')(app);
 
-require('./passport'); // import passport.js file
-require('dotenv').config(); // import environment variables from .env file
+require('./passport');
+require('dotenv').config();
 
 // import schema models
 const Movies = Models.Movie;
@@ -50,10 +50,18 @@ const connection_uri = process.env.connection_uri;
 console.log(connection_uri);
 
 // This connects mongoose to mongodb database
-mongoose.connect(connection_uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+async function databaseConnect() {
+  try {
+    await mongoose.connect(connection_uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to database');
+  } catch (error) {
+    console.log('Error connecting to database: ', error);
+  }
+}
+databaseConnect();
 
 // READ
 app.get('/', (req, res) => {
