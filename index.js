@@ -5,12 +5,17 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Models = require('./models');
 const { check, validationResult } = require('express-validator');
+const passport = require('passport');
+const auth = require('./auth')(app);
+const app = express(); // express module
+const cors = require('cors'); // cors module
+
+require('./passport'); // import passport.js file
+require('dotenv').config(); // import environment variables from .env file
 
 // import schema models
 const Movies = Models.Movie;
 const Users = Models.User;
-
-const app = express(); // express module
 
 // MIDDLEWARES
 app.use(bodyParser.urlencoded({ extended: true })); // handles urlencoded data
@@ -18,52 +23,32 @@ app.use(bodyParser.json()); // handles json encoded data
 app.use(morgan('common')); // logs the requests to the console
 app.use(express.static('dist')); // serves static files from 'dist' directory
 
-// CORS
-const cors = require('cors');
+// // CORS origins
+// const allowedOrigins = ['http://localhost:27017'];
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       if (!origin) return callback(null, true);
+//       if (allowedOrigins.indexOf(origin) === -1) {
+//         // If a specific origin isn't found on the list of allowed origins
+//         const message =
+//           'The CORS policy for this application doesnt allow acces from origin ' +
+//           origin;
+//         return callback(new Error(message), false);
+//       }
+//       return callback(null, true);
+//     },
+//   })
+// );
 
-// CORS origins
-const allowedOrigins = ['http://localhost:27017'];
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        // If a specific origin isn't found on the list of allowed origins
-        const message =
-          'The CORS policy for this application doesnt allow acces from origin ' +
-          origin;
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    },
-  })
-);
-
-// Require passport module and import passport.js fil
-const auth = require('./auth')(app);
-const passport = require('passport'); // module
-require('./passport');
-
-// // connects to the DB on the localhost
-// const CONNECTION_URL = process.env.CONNECTION_URI;
-// console.log(CONNECTION_URL);
-
+// connects to the DB on the localhost
+const dbUrl = process.env.connection_uri;
+console.log(process.env.connection_uri);
 // This connects mongoose to mongodb database
-async function main() {
-  try {
-    await mongoose.connect(
-      'mongodb+srv://jacobcoch:Malparido22@myflixdb.phuxd7i.mongodb.net/?retryWrites=true&w=majority',
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
-    );
-    console.log('Connected to database successfully!');
-  } catch (error) {
-    console.error('Failed to connect to database:', error);
-  }
-}
-main();
+mongoose.connect(dbUrl, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // this connects to the LOCAL Database
 // main().catch((err) => console.log(err));
