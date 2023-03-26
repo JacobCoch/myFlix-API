@@ -24,39 +24,35 @@ app.use(bodyParser.json()); // handles json encoded data
 app.use(morgan('common')); // logs the requests to the console
 app.use(express.static('dist')); // serves static files from 'dist' directory
 
-// // CORS origins
-// const allowedOrigins = ['http://localhost:27017'];
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigins.indexOf(origin) === -1) {
-//         // If a specific origin isn't found on the list of allowed origins
-//         const message =
-//           'The CORS policy for this application doesnt allow acces from origin ' +
-//           origin;
-//         return callback(new Error(message), false);
-//       }
-//       return callback(null, true);
-//     },
-//   })
-// );
+// CORS origins
+const allowedOrigins = [
+  'http://localhost:27017',
+  'https://mymovieapidb.herokuapp.com/',
+];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn't found on the list of allowed origins
+        const message =
+          'The CORS policy for this application doesnt allow acces from origin ' +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 // connects to the DB on the localhost
-const dbUrl = process.env.connection_uri;
+const connection_uri = process.env.connection_uri;
 
 // This connects mongoose to mongodb database
-mongoose.connect(dbUrl, {
+mongoose.connect(connection_uri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
-// this connects to the LOCAL Database
-// main().catch((err) => console.log(err));
-// async function main() {
-//   await mongoose.connect('mongodb://127.0.0.1:27017/newmoviedb');
-//   console.log('connected');
-// }
 
 // READ
 app.get('/', (req, res) => {
