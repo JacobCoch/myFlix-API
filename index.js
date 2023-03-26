@@ -6,9 +6,10 @@ const mongoose = require('mongoose');
 const Models = require('./models');
 const { check, validationResult } = require('express-validator');
 const passport = require('passport');
-const auth = require('./auth')(app);
 const app = express(); // express module
 const cors = require('cors'); // cors module
+
+const auth = require('./auth')(app);
 
 require('./passport'); // import passport.js file
 require('dotenv').config(); // import environment variables from .env file
@@ -43,7 +44,7 @@ app.use(express.static('dist')); // serves static files from 'dist' directory
 
 // connects to the DB on the localhost
 const dbUrl = process.env.connection_uri;
-console.log(process.env.connection_uri);
+
 // This connects mongoose to mongodb database
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,
