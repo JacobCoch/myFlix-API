@@ -47,6 +47,7 @@ app.use(
 
 // connects to the DB on the localhost
 const connection_uri = process.env.connection_uri;
+console.log(connection_uri);
 
 // This connects mongoose to mongodb database
 mongoose.connect(connection_uri, {
