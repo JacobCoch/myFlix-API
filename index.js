@@ -149,7 +149,7 @@ app.get(
   async (req, res) => {
     try {
       const users = await Users.find();
-      res.status(201).json(users);
+      res.status(200).json(users);
     } catch (err) {
       console.error(err);
       res.status(500).send('Error: ' + err);
