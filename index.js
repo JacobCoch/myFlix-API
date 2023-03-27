@@ -46,10 +46,11 @@ app.use(
 );
 
 // connects to the DB on the localhost
+const connection_uri = process.env.connection_uri;
+console.log(connection_uri);
 
 // This connects mongoose to mongodb database
 async function databaseConnect() {
-  const connection_uri = process.env.connection_uri;
   try {
     await mongoose.connect(connection_uri, {
       useNewUrlParser: true,
@@ -61,8 +62,6 @@ async function databaseConnect() {
   }
 }
 databaseConnect();
-
-console.log(connection_uri);
 
 // READ
 app.get('/', (req, res) => {
