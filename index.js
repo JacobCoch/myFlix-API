@@ -26,7 +26,7 @@ app.use(express.static('dist')); // serves static files from 'dist' directory
 
 // CORS origins
 const allowedOrigins = [
-  'http://localhost:27017',
+  'http://localhost:8080',
   'https://mymovieapidb.herokuapp.com/',
 ];
 app.use(
@@ -50,18 +50,10 @@ const connection_uri = process.env.connection_uri;
 console.log(connection_uri);
 
 // This connects mongoose to mongodb database
-async function databaseConnect() {
-  try {
-    await mongoose.connect(connection_uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('Connected to database');
-  } catch (error) {
-    console.log('Error connecting to database: ', error);
-  }
-}
-databaseConnect();
+mongoose.connect(connection_uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // READ
 app.get('/', (req, res) => {
