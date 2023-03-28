@@ -26,7 +26,7 @@ app.use(express.static('dist')); // serves static files from 'dist' directory
 
 // CORS origins
 const allowedOrigins = [
-  'http://localhost:27017',
+  'http://localhost:8080',
   'https://mymovieapidb.herokuapp.com/',
 ];
 app.use(
@@ -317,7 +317,7 @@ app.delete(
 );
 
 // LISTEN
-const port = process.env.PORT || 27017;
+const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on Port ' + port);
 });
