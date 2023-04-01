@@ -254,6 +254,7 @@ app.post(
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         });
+        return res.status(201).json({ Username: req.body.Username });
       }
     } catch (err) {
       console.error(err);
