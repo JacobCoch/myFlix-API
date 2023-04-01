@@ -254,7 +254,7 @@ app.post(
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         });
-        return res.status(201).json({ Username: req.body.Username });
+        return res.status(201).json({ Username: req.body.Username }); //TODO send more  info but password
       }
     } catch (err) {
       console.error(err);
