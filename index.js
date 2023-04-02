@@ -145,7 +145,7 @@ app.get(
 // Get all users
 app.get(
   '/users',
-  // passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
       const users = await Users.find();
