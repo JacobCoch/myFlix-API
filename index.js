@@ -28,6 +28,7 @@ app.use(express.static('dist')); // serves static files from 'dist' directory
 const allowedOrigins = [
   'http://localhost:8080',
   'https://mymovieapidb.herokuapp.com/',
+  'http://localhost:1234',
 ];
 app.use(
   cors({
