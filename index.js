@@ -27,7 +27,7 @@ app.use(express.static('dist')); // serves static files from 'dist' directory
 // CORS origins
 const allowedOrigins = [
   'http://localhost:8080',
-  'https://mymovieapidb.herokuapp.com/',
+  'https://mymovieapidb.herokuapp.com',
   'http://localhost:1234',
 ];
 app.use(
@@ -72,7 +72,7 @@ app.get('/', (req, res) => {
 // GET all movies
 app.get(
   '/movies',
-  // passport.authenticate('jwt', { session: false }),
+  passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
       const movies = await Movies.find();
