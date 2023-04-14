@@ -27,12 +27,6 @@ module.exports = (router) => {
           res.send(error);
         }
         const token = generateJWTToken(user.toJSON());
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:1234');
-        res.setHeader('Access-Control-Allow-Methods', 'POST');
-        res.setHeader(
-          'Access-Control-Allow-Headers',
-          'Content-Type, Authorization'
-        );
         return res.json({ user, token });
       });
     })(req, res);
