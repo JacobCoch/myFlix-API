@@ -27,6 +27,7 @@ module.exports = (router) => {
           res.send(error);
         }
         const token = generateJWTToken(user.toJSON());
+        res.setHeader('Access-Control-Allow-Origin', '*');
         return res.json({ user, token });
       });
     })(req, res);
