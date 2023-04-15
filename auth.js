@@ -14,6 +14,7 @@ const generateJWTToken = (user) => {
 // POST login
 module.exports = (router) => {
   router.post('/login', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     passport.authenticate('local', { session: false }, (error, user, info) => {
       console.log(error);
       if (error || !user) {
@@ -27,7 +28,6 @@ module.exports = (router) => {
           res.send(error);
         }
         const token = generateJWTToken(user.toJSON());
-        res.setHeader('Access-Control-Allow-Origin', '*');
         return res.json({ user, token });
       });
     })(req, res);
