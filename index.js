@@ -25,7 +25,11 @@ app.use(morgan('common')); // logs the requests to the console
 app.use(express.static('dist')); // serves static files from 'dist' directory
 
 // Use cors to allow cross-origin requests
-app.use(cors());
+const corsOptions = {
+  origin: 'http://localhost:1234',
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
 
 // connects to the DB on the localhost
 const connection_uri = process.env.connection_uri;
