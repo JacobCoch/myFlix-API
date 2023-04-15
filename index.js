@@ -30,6 +30,7 @@ const corsOptions = {
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 app.use(cors(corsOptions));
+console.log(corsOptions);
 
 // connects to the DB on the localhost
 const connection_uri = process.env.connection_uri;
