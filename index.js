@@ -25,26 +25,14 @@ app.use(morgan('common')); // logs the requests to the console
 app.use(express.static('dist')); // serves static files from 'dist' directory
 
 // Use cors to allow cross-origin requests
-const allowedOrigins = [
-  'http://localhost:8080',
-  'http://localhost:1234',
-  'https://mymovieapidb.herokuapp.com/',
-];
+const corsOptions = {
+  origin: '*',
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const message =
-          "The CORS policy for this application doesn't allow access from origin " +
-          origin;
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    },
-  })
-);
+app.use(cors(corsOptions));
+console.log(corsOptions);
 
 // connects to the DB on the localhost
 const connection_uri = process.env.connection_uri;
