@@ -9,9 +9,6 @@ const passport = require('passport');
 const app = express();
 const cors = require('cors');
 
-const auth = require('./auth')(app);
-
-require('./passport');
 require('dotenv').config();
 
 // import schema models
@@ -23,6 +20,9 @@ app.use(bodyParser.urlencoded({ extended: true })); // handles urlencoded data
 app.use(bodyParser.json()); // handles json encoded data
 app.use(morgan('common')); // logs the requests to the console
 app.use(express.static('dist')); // serves static files from 'dist' directory
+
+const auth = require('./auth')(app);
+require('./passport');
 
 // Use cors to allow cross-origin requests
 const corsOptions = {
