@@ -7,7 +7,6 @@ const Models = require('./models');
 const { check, validationResult } = require('express-validator');
 const passport = require('passport');
 const app = express();
-const cors = require('cors');
 
 require('dotenv').config();
 
@@ -20,19 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // handles urlencoded data
 app.use(bodyParser.json()); // handles json encoded data
 app.use(morgan('common')); // logs the requests to the console
 app.use(express.static('dist')); // serves static files from 'dist' directory
-
-const auth = require('./auth')(app);
-require('./passport');
-
-// Use cors to allow cross-origin requests
-const corsOptions = {
-  origin: '*',
-  credentials: true, //access-control-allow-credentials:true
-  optionSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
-console.log(corsOptions);
 
 // connects to the DB on the localhost
 const connection_uri = process.env.connection_uri;
@@ -51,6 +37,34 @@ async function databaseConnect() {
   }
 }
 databaseConnect();
+
+// Use cors to allow cross-origin requests
+const cors = require('cors');
+const allowedOrigins = [
+  'http://localhost:8080',
+  'http://localhost:1234',
+  'https://mymovieapidb.herokuapp.com/',
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn’t found on the list of allowed origins
+        let message =
+          'The CORS policy for this application doesn’t allow access from origin ' +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
+const auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
 // READ
 app.get('/', (req, res) => {
