@@ -21,6 +21,7 @@ module.exports = (router) => {
           message: 'Something is not right',
           user: user,
         });
+        console.log('error: ' + error);
       }
       req.login(user, { session: false }, (error) => {
         if (error) {
