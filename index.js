@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Models = require('./models');
+const cors = require('cors');
+
 const { check, validationResult } = require('express-validator');
 const app = express();
 
@@ -38,15 +40,26 @@ async function databaseConnect() {
 databaseConnect();
 
 // Use cors to allow cross-origin requests
-const cors = require('cors');
-const corsOptions = {
-  origin: '*',
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  preflightContinue: false, // allows the OPTIONS request to go through
-};
-
-app.use(cors(corsOptions));
-app.options('*', cors());
+let allowedOrigins = [
+  'http://localhost:8080',
+  'http://localhost:1234',
+  'https://themovieflicks.netlify.app/',
+];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // if a specific origin isn't found on the list of allwed origins
+        let message =
+          'The CORS policy for this app does NOT allow access from origin ' +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 const auth = require('./auth')(app);
 const passport = require('passport');
