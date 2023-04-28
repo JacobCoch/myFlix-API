@@ -39,11 +39,8 @@ databaseConnect();
 
 // Use cors to allow cross-origin requests
 const cors = require('cors');
-const allowedOrigins = [
-  'http://localhost:8080',
-  'http://localhost:1234',
-  'https://mymovieapidb.herokuapp.com',
-];
+app.use(cors());
+const allowedOrigins = ['http://localhost:8080', 'http://localhost:1234'];
 
 app.use(
   cors({
