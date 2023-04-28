@@ -39,7 +39,13 @@ databaseConnect();
 
 // Use cors to allow cross-origin requests
 const cors = require('cors');
-app.use(cors());
+const corsOptions = {
+  origin: '*',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  preflightContinue: false, // allows the OPTIONS request to go through
+};
+
+app.use(cors(corsOptions));
 
 const auth = require('./auth')(app);
 const passport = require('passport');
