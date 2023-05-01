@@ -25,7 +25,7 @@ passport.use(
           });
         }
         if (!user.validatePassword(password)) {
-          crossOriginIsolated.valueOf('incorrect password');
+          console.log('incorrect password');
           return callback(null, false, { message: 'Incorrect password.' });
         }
         console.log('finished');
