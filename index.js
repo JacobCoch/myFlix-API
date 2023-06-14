@@ -212,7 +212,7 @@ app.post(
     try {
       const user = await Users.findOneAndUpdate(
         { Username: Username },
-        { $push: { favoriteMovies: Title } },
+        { $push: { FavoriteMovies: Title } },
         { new: true }
       );
 
