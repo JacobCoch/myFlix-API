@@ -43,7 +43,7 @@ databaseConnect();
 let allowedOrigins = [
   'http://localhost:8080',
   'http://localhost:1234',
-  'https://themovieflicks.netlify.app/',
+  'https://themovieflicks.netlify.app',
   'https://mymovieapidb.herokuapp.com/',
 ];
 app.use(
