@@ -204,28 +204,27 @@ app.put(
 
 // POST, allow user to add movie to fav list
 app.post(
-  '/users/:Username/:Title',
+  '/users/:Username/:id',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    const { Username, Title } = req.params;
+    const { Username, id } = req.params;
 
     try {
       const user = await Users.findOneAndUpdate(
         { Username: Username },
-        { $push: { FavoriteMovies: Title } },
+        { $push: { FavoriteMovies: id } },
         { new: true }
       );
-
       if (user) {
-        res.status(200).json({
-          message: `${Title} has been added to user ${Username}'s array`,
-        });
+        res
+          .status(200)
+          .send(`${id} has been added to user ${Username}'s array`);
       } else {
-        res.status(400).json({ error: 'No such user' });
+        res.status(400).send('no such user');
       }
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: 'Error: ' + err });
+      res.status(500).send('Error: ' + err);
     }
   }
 );
