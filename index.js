@@ -268,21 +268,21 @@ app.post(
 
 // DELETE movie from favorite list
 app.delete(
-  '/users/:Username/:Title',
+  '/users/:Username/:id',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    const { Username, Title } = req.params;
+    const { Username, id } = req.params;
 
     try {
       const user = await Users.findOneAndUpdate(
         { Username: Username },
-        { $pull: { favoriteMovies: Title } },
+        { $pull: { favoriteMovies: id } },
         { new: true }
       );
       if (user) {
         res
           .status(200)
-          .send(`${Title} has been removed from user ${Username}'s array`);
+          .send(`${id} has been removed from user ${Username}'s array`);
       } else {
         res.status(400).send('no such user');
       }
