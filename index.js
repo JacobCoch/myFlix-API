@@ -216,9 +216,9 @@ app.post(
         { new: true }
       );
       if (user) {
-        res
-          .status(200)
-          .send(`${id} has been added to user ${Username}'s array`);
+        res.status(200).json({
+          message: `${id} has been added to user ${Username}'s array`,
+        });
       } else {
         res.status(400).send('no such user');
       }
