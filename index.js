@@ -271,15 +271,13 @@ app.delete(
     const { Username, id } = req.params;
 
     try {
-      const user = await Users.findOneAndUpdate(
+      const updateUser = await Users.findOneAndUpdate(
         { Username: Username },
         { $pull: { FavoriteMovies: id } },
         { new: true }
       );
-      if (user) {
-        res.status(200).json({
-          message: `${id} has been removed from user ${Username}'s array`,
-        });
+      if (updateUser) {
+        res.json(updateUser);
       } else {
         res.status(400).send('no such user');
       }
