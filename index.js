@@ -276,7 +276,7 @@ app.delete(
     try {
       const user = await Users.findOneAndUpdate(
         { Username: Username },
-        { $pull: { favoriteMovies: id } },
+        { $pull: { FavoriteMovies: id } },
         { new: true }
       );
       if (user) {
