@@ -203,31 +203,31 @@ app.put(
 );
 
 // POST, allow user to add movie to fav list
-app.post(
-  '/users/:Username/:id',
-  passport.authenticate('jwt', { session: false }),
-  async (req, res) => {
-    const { Username, id } = req.params;
+// app.post(
+//   '/users/:Username/:id',
+//   passport.authenticate('jwt', { session: false }),
+//   async (req, res) => {
+//     const { Username, id } = req.params;
 
-    try {
-      const user = await Users.findOneAndUpdate(
-        { Username: Username },
-        { $push: { FavoriteMovies: id } },
-        { new: true }
-      );
-      if (user) {
-        res.status(200).json({
-          message: `${id} has been added to user ${Username}'s array`,
-        });
-      } else {
-        res.status(400).send('no such user');
-      }
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error: ' + err);
-    }
-  }
-);
+//     try {
+//       const user = await Users.findOneAndUpdate(
+//         { Username: Username },
+//         { $push: { FavoriteMovies: id } },
+//         { new: true }
+//       );
+//       if (user) {
+//         res.status(200).json({
+//           message: `${id} has been added to user ${Username}'s array`,
+//         });
+//       } else {
+//         res.status(400).send('no such user');
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       res.status(500).send('Error: ' + err);
+//     }
+//   }
+// );
 
 // POST, creates a new user
 app.post(
@@ -290,6 +290,28 @@ app.delete(
       console.error(err);
       res.status(500).send('Error: ' + err);
     }
+  }
+);
+
+app.post(
+  '/users/:Username/:id',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Users.findOneAndUpdate(
+      { Username: req.params.Username },
+      {
+        $push: { FavoriteMovies: req.params.id },
+      },
+      { new: true },
+      (err, updatedUser) => {
+        if (err) {
+          console.error(err);
+          res.status(500).send('Error: ' + err);
+        } else {
+          res.json(updatedUser);
+        }
+      }
+    );
   }
 );
 
