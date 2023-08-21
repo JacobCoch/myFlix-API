@@ -44,7 +44,7 @@ let allowedOrigins = [
   'http://localhost:8080',
   'http://localhost:1234',
   'http://localhost:4200',
-  'https://jarjardinks.github.io/myFlix-Client-Angular/',
+  'https://jarjardinks.github.io',
   'https://themovieflicks.netlify.app',
   'https://mymovieapidb.herokuapp.com/',
 ];
