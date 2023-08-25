@@ -241,12 +241,15 @@ app.post(
     console.log(req.body);
     try {
       const errors = validationResult(req);
-      const hashedPassword = await Users.hashPassword(req.body.Password);
-      const user = await Users.findOne({ Username: req.body.Username });
-      console.log(user);
+
       if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
       }
+
+      const hashedPassword = await Users.hashPassword(req.body.Password);
+      const user = await Users.findOne({ Username: req.body.Username });
+      console.log(user);
+
       if (user) {
         return res.status(400).send(req.body.Username + ' already exists');
       } else {
