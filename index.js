@@ -183,19 +183,31 @@ app.put(
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
     try {
-      const hashedPassword = await Users.hashPassword(req.body.Password);
+      const updateFields = {};
+
+      if (req.body.Username) {
+        updateFields.Username = req.body.Username;
+      }
+
+      if (req.body.Password) {
+        const hashedPassword = await Users.hashPassword(req.body.Password);
+        updateFields.Password = hashedPassword;
+      }
+
+      if (req.body.Email) {
+        updateFields.Email = req.body.Email;
+      }
+
+      if (req.body.Birthday) {
+        updateFields.Birthday = req.body.Birthday;
+      }
+
       const updatedUser = await Users.findOneAndUpdate(
         { Username: req.params.Username },
-        {
-          $set: {
-            Username: req.body.Username,
-            Password: hashedPassword,
-            Email: req.body.Email,
-            Birthday: req.body.Birthday,
-          },
-        },
+        { $set: updateFields },
         { new: true }
       );
+
       res.json(updatedUser);
     } catch (err) {
       console.error(err);
