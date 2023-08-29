@@ -7,7 +7,14 @@ const Users = Models.User;
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
-// Strategy #1 LocalStrategy, defines you basic HTTP authentication for login requests
+/**
+ * Passport local strategy
+ * @param {object} username
+ * @param {object} password
+ * @param {object} callback
+ * @returns  JWT Token
+ *
+ */
 passport.use(
   new LocalStrategy(
     {
@@ -38,7 +45,13 @@ passport.use(
   )
 );
 
-// Strategy #2 JWTStrategy, allows you to authenticate users based on the JWT submitted alongside their request
+/**
+ * Passport JWT strategy
+ * @param {object} jwtPayload
+ * @param {object} callback
+ * @returns  JWT Token
+ *
+ */
 passport.use(
   new JWTStrategy(
     {

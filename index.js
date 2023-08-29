@@ -48,6 +48,15 @@ let allowedOrigins = [
   'https://themovieflicks.netlify.app',
   'https://mymovieapidb.herokuapp.com/',
 ];
+
+/**
+ * CORS policy
+ * @method CORS
+ * @param {string} origin - origin of request
+ * @param {function} callback - callback function
+ * @returns {object} callback
+ *
+ */
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -68,12 +77,24 @@ const auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 
-// READ
+/**
+ * GET documentation
+ * @method GET
+ * @param {string} endpoint - /
+ * @returns {object} documentation
+ *
+ */
 app.get('/', (req, res) => {
   res.sendFile('public/documentation.html', { root: __dirname });
 });
 
-// GET all movies
+/**
+ * GET all movies
+ * @method GET
+ * @param {string} endpoint - /movies
+ * @returns {object} list of movies
+ *
+ */
 app.get(
   '/movies',
   passport.authenticate('jwt', { session: false }),
@@ -88,7 +109,14 @@ app.get(
   }
 );
 
-// GET movie by title
+/**
+ * GET data about a movie by title
+ * @method GET
+ * @param {string} endpoint - /movies/:Title
+ * @param {string} Title - title of movie
+ * @returns {object} movie info
+ *
+ */
 app.get(
   '/movies/:Title',
   passport.authenticate('jwt', { session: false }),
@@ -103,7 +131,14 @@ app.get(
   }
 );
 
-// GET data about a genre by title
+/**
+ * GET data about a genre by name
+ * @method GET
+ * @param {string} endpoint - /movies/genres/:Name
+ * @param {string} Name - name of genre
+ * @returns {object} genre info
+ *
+ */
 app.get(
   '/movies/genres/:Name',
   passport.authenticate('jwt', { session: false }),
@@ -125,7 +160,14 @@ app.get(
   }
 );
 
-// GET director by name
+/**
+ * GET data about a director by name
+ * @method GET
+ * @param {string} endpoint - /movies/directors/:Name
+ * @param {string} Name - name of director
+ * @returns {object} director info
+ *
+ */
 app.get(
   '/movies/directors/:Name',
   passport.authenticate('jwt', { session: false }),
@@ -147,7 +189,13 @@ app.get(
   }
 );
 
-// Get all users
+/**
+ * GET all users
+ * @method GET
+ * @param {string} endpoint - /users
+ * @returns {object} list of users
+ *
+ */
 app.get(
   '/users',
   passport.authenticate('jwt', { session: false }),
@@ -162,7 +210,14 @@ app.get(
   }
 );
 
-// GET a user by username
+/**
+ * GET user by username
+ * @method GET
+ * @param {string} endpoint - /users/:Username
+ * @param {string} Username - username of user
+ * @returns {object} user info
+ *
+ */
 app.get(
   '/users/:Username',
   passport.authenticate('jwt', { session: false }),
@@ -177,7 +232,17 @@ app.get(
   }
 );
 
-// PUT to update user info
+/**
+ * PUT, update user info
+ * @method PUT
+ * @param {string} endpoint - /users/:Username
+ * @param {string} Username - username of user
+ * @param {string} Password - password of user
+ * @param {string} Email - email of user
+ * @param {string} Birthday - birthday of user
+ * @returns {object} updated user info
+ *
+ */
 app.put(
   '/users/:Username',
   passport.authenticate('jwt', { session: false }),
@@ -216,7 +281,16 @@ app.put(
   }
 );
 
-// POST, allow user to add movie to fav list
+/**
+ * POST, add movie to favorite list
+ * @method POST
+ * @param {string} endpoint - /users/:Username/:id
+ * @param {string} Username - username of user
+ * @param {string} id - id of movie
+ * @returns {object} updated user info
+ * @returns {string} error message
+ *
+ */
 app.post(
   '/users/:Username/:id',
   passport.authenticate('jwt', { session: false }),
@@ -240,7 +314,16 @@ app.post(
   }
 );
 
-// POST, creates a new user
+/**
+ * POST, add new user
+ * @method POST
+ * @param {string} endpoint - /users
+ * @param {string} Username - username of user
+ * @param {string} Password - password of user
+ * @param {string} Email - email of user
+ * @param {string} Birthday - birthday of user
+ * @returns {object} new user info
+ */
 app.post(
   '/users',
   [
@@ -280,7 +363,15 @@ app.post(
   }
 );
 
-// DELETE movie from favorite list
+/**
+ * DELETE, remove movie from favorite list
+ * @method DELETE
+ * @param {string} endpoint - /users/:Username/:id
+ * @param {string} Username - username of user
+ * @param {string} id - id of movie
+ * @returns {object} updated user info
+ * @returns {string} error message
+ */
 app.delete(
   '/users/:Username/:id',
   passport.authenticate('jwt', { session: false }),
@@ -305,7 +396,15 @@ app.delete(
   }
 );
 
-// DELETE
+/**
+ * DELETE, remove user
+ * @method DELETE
+ * @param {string} endpoint - /users/:Username
+ * @param {string} Username - username of user
+ * @returns {string} message
+ * @returns {string} error message
+ *
+ */
 app.delete(
   '/users/:Username',
   passport.authenticate('jwt', { session: false }),
@@ -332,8 +431,16 @@ app.delete(
   }
 );
 
-// LISTEN
 const port = process.env.PORT || 8080;
+/**
+ * listen for requests
+ * @method listen
+ * @param {string} port - port to listen on
+ * @param {string} host - host to listen on
+ * @param {function} callback - callback function
+ * @returns {object} callback
+ *
+ */
 app.listen(port, '0.0.0.0', () => {
   console.log('Listening on Port ' + port);
 });

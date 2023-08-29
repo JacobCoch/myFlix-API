@@ -2,7 +2,20 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-// This is the movieSchema
+/**
+ * Define the structure of the movie collection in the database
+ * @param {string} Title
+ * @param {number} Year
+ * @param {string} Description
+ * @param {number} Rating
+ * @param {object} Director
+ * @param {object} Genre
+ * @param {array} Actors
+ * @param {string} ImagePath
+ * @param {boolean} Featured
+ * @returns  Movie Schema
+ *
+ */
 const movieSchema = mongoose.Schema({
   Title: { type: String, required: true },
   Year: { type: Number },
@@ -21,7 +34,16 @@ const movieSchema = mongoose.Schema({
   Featured: Boolean,
 });
 
-// Another schema for the users
+/**
+ * Define the structure of the user collection in the database
+ * @param {string} Username
+ * @param {string} Password
+ * @param {string} Email
+ * @param {date} Birthday
+ * @param {array} FavoriteMovies
+ * @returns  User Schema
+ *
+ */
 const userSchema = mongoose.Schema({
   Username: { type: String, required: true },
   Password: { type: String, required: true },
