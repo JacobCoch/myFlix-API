@@ -233,6 +233,28 @@ app.get(
 );
 
 /**
+ * GET, favorite movies list
+ * @method GET
+ * @param {string} endpoint - /users/:Username/favorites
+ * @param {string} Username - username of user
+ * @returns {object} list of favorite movies
+ *
+ */
+app.get(
+  '/users/:Username/favorites',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const users = await Users.findOne({ Username: req.params.Username });
+      res.status(200).json(users.FavoriteMovies);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
  * PUT, update user info
  * @method PUT
  * @param {string} endpoint - /users/:Username
