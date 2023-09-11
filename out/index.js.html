@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: index.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: index.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>// this gets the express module
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const Models = require('./models');
+const cors = require('cors');
+
+const { check, validationResult } = require('express-validator');
+const app = express();
+
+require('dotenv').config();
+
+// import schema models
+const Movies = Models.Movie;
+const Users = Models.User;
+
+// MIDDLEWARES
+app.use(bodyParser.urlencoded({ extended: true })); // handles urlencoded data
+app.use(bodyParser.json()); // handles json encoded data
+app.use(morgan('common')); // logs the requests to the console
+app.use(express.static('dist')); // serves static files from 'dist' directory
+
+// connects to the DB on the localhost
+const connection_uri = process.env.connection_uri;
+console.log(connection_uri);
+
+// This connects mongoose to mongodb database
+async function databaseConnect() {
+  try {
+    await mongoose.connect(connection_uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Connected to database');
+  } catch (error) {
+    console.log('Error connecting to database: ', error);
+  }
+}
+databaseConnect();
+
+// Use cors to allow cross-origin requests
+let allowedOrigins = [
+  'http://localhost:8080',
+  'http://localhost:1234',
+  'http://localhost:4200',
+  'https://jarjardinks.github.io',
+  'https://themovieflicks.netlify.app',
+  'https://mymovieapidb.herokuapp.com/',
+];
+
+/**
+ * CORS policy
+ * @method CORS
+ * @param {string} origin - origin of request
+ * @param {function} callback - callback function
+ * @returns {object} callback
+ *
+ */
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // if a specific origin isn't found on the list of allwed origins
+        let message =
+          'The CORS policy for this app does NOT allow access from origin ' +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
+const auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
+
+/**
+ * GET documentation
+ * @method GET
+ * @param {string} endpoint - /
+ * @returns {object} documentation
+ *
+ */
+app.get('/', (req, res) => {
+  res.sendFile('public/documentation.html', { root: __dirname });
+});
+
+/**
+ * GET all movies
+ * @method GET
+ * @param {string} endpoint - /movies
+ * @returns {object} list of movies
+ *
+ */
+app.get(
+  '/movies',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const movies = await Movies.find();
+      res.status(201).json(movies);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * GET data about a movie by title
+ * @method GET
+ * @param {string} endpoint - /movies/:Title
+ * @param {string} Title - title of movie
+ * @returns {object} movie info
+ *
+ */
+app.get(
+  '/movies/:Title',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const movie = await Movies.findOne({ Title: req.params.Title });
+      res.status(201).json(movie);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * GET data about a genre by name
+ * @method GET
+ * @param {string} endpoint - /movies/genres/:Name
+ * @param {string} Name - name of genre
+ * @returns {object} genre info
+ *
+ */
+app.get(
+  '/movies/genres/:Name',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const genre = await Movies.findOne(
+        { 'Genre.Name': req.params.Name },
+        { 'Genre.$': 1 } // projection param (only the first matching element gets returned)
+      );
+      if (genre) {
+        res.status(200).json(genre);
+      } else {
+        res.status(404).send('Genre not found');
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * GET data about a director by name
+ * @method GET
+ * @param {string} endpoint - /movies/directors/:Name
+ * @param {string} Name - name of director
+ * @returns {object} director info
+ *
+ */
+app.get(
+  '/movies/directors/:Name',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const director = await Movies.findOne(
+        { 'Director.Name': req.params.Name },
+        { 'Director.$': 1 }
+      );
+      if (director) {
+        res.status(200).json(director);
+      } else {
+        res.status(400).send('no such director');
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * GET all users
+ * @method GET
+ * @param {string} endpoint - /users
+ * @returns {object} list of users
+ *
+ */
+app.get(
+  '/users',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const users = await Users.find();
+      res.status(200).json(users);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * GET user by username
+ * @method GET
+ * @param {string} endpoint - /users/:Username
+ * @param {string} Username - username of user
+ * @returns {object} user info
+ *
+ */
+app.get(
+  '/users/:Username',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const users = await Users.findOne({ Username: req.params.Username });
+      res.status(200).json(users);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * GET, favorite movies list
+ * @method GET
+ * @param {string} endpoint - /users/:Username/favorites
+ * @param {string} Username - username of user
+ * @returns {object} list of favorite movies
+ *
+ */
+app.get(
+  '/users/:Username/favorites',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const users = await Users.findOne({ Username: req.params.Username });
+      res.status(200).json(users.FavoriteMovies);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * PUT, update user info
+ * @method PUT
+ * @param {string} endpoint - /users/:Username
+ * @param {string} Username - username of user
+ * @param {string} Password - password of user
+ * @param {string} Email - email of user
+ * @param {string} Birthday - birthday of user
+ * @returns {object} updated user info
+ *
+ */
+app.put(
+  '/users/:Username',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const updateFields = {};
+
+      if (req.body.Username) {
+        updateFields.Username = req.body.Username;
+      }
+
+      if (req.body.Password) {
+        const hashedPassword = await Users.hashPassword(req.body.Password);
+        updateFields.Password = hashedPassword;
+      }
+
+      if (req.body.Email) {
+        updateFields.Email = req.body.Email;
+      }
+
+      if (req.body.Birthday) {
+        updateFields.Birthday = req.body.Birthday;
+      }
+
+      const updatedUser = await Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        { $set: updateFields },
+        { new: true }
+      );
+
+      res.json(updatedUser);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * POST, add movie to favorite list
+ * @method POST
+ * @param {string} endpoint - /users/:Username/:id
+ * @param {string} Username - username of user
+ * @param {string} id - id of movie
+ * @returns {object} updated user info
+ * @returns {string} error message
+ *
+ */
+app.post(
+  '/users/:Username/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    try {
+      const updatedUser = await Users.findOneAndUpdate(
+        { Username: req.params.Username },
+        { $push: { FavoriteMovies: req.params.id } },
+        { new: true }
+      );
+
+      if (updatedUser) {
+        res.json(updatedUser);
+      } else {
+        res.status(400).send('No such user');
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * POST, add new user
+ * @method POST
+ * @param {string} endpoint - /users
+ * @param {string} Username - username of user
+ * @param {string} Password - password of user
+ * @param {string} Email - email of user
+ * @param {string} Birthday - birthday of user
+ * @returns {object} new user info
+ */
+app.post(
+  '/users',
+  [
+    check('Username', 'Username is required.').isLength({ min: 5 }),
+    check('Username', 'Username cannot be empty.').notEmpty(),
+    check('Password', 'Password is required.').notEmpty(),
+    check('Email', 'Email does not appear to be valid.').isEmail(),
+  ],
+  async (req, res) => {
+    console.log(req.body);
+    try {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        return res.status(422).json({ errors: errors.array() });
+      }
+
+      const hashedPassword = await Users.hashPassword(req.body.Password);
+      const user = await Users.findOne({ Username: req.body.Username });
+      console.log(user);
+
+      if (user) {
+        return res.status(400).send(req.body.Username + ' already exists');
+      } else {
+        await Users.create({
+          Username: req.body.Username,
+          Password: hashedPassword,
+          Email: req.body.Email,
+          Birthday: req.body.Birthday,
+        });
+        return res.status(201).json({ Username: req.body.Username }); //TODO send more  info but password
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * DELETE, remove movie from favorite list
+ * @method DELETE
+ * @param {string} endpoint - /users/:Username/:id
+ * @param {string} Username - username of user
+ * @param {string} id - id of movie
+ * @returns {object} updated user info
+ * @returns {string} error message
+ */
+app.delete(
+  '/users/:Username/:id',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const { Username, id } = req.params;
+
+    try {
+      const updateUser = await Users.findOneAndUpdate(
+        { Username: Username },
+        { $pull: { FavoriteMovies: id } },
+        { new: true }
+      );
+      if (updateUser) {
+        res.json(updateUser);
+      } else {
+        res.status(400).send('no such user');
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+/**
+ * DELETE, remove user
+ * @method DELETE
+ * @param {string} endpoint - /users/:Username
+ * @param {string} Username - username of user
+ * @returns {string} message
+ * @returns {string} error message
+ *
+ */
+app.delete(
+  '/users/:Username',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    const Username = req.params.Username;
+
+    try {
+      const user = await Users.findOneAndDelete(
+        { Username: req.params.Username },
+        { $pull: { Username } },
+        { new: true }
+      );
+      if (user) {
+        res
+          .status(200)
+          .send(`${Username} has been removed from the Users list`);
+      } else {
+        res.status(400).send('no such user');
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error: ' + err);
+    }
+  }
+);
+
+const port = process.env.PORT || 8080;
+/**
+ * listen for requests
+ * @method listen
+ * @param {string} port - port to listen on
+ * @param {string} host - host to listen on
+ * @param {function} callback - callback function
+ * @returns {object} callback
+ *
+ */
+app.listen(port, '0.0.0.0', () => {
+  console.log('Listening on Port ' + port);
+});
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#CORS">CORS</a></li><li><a href="global.html#DELETE">DELETE</a></li><li><a href="global.html#GET">GET</a></li><li><a href="global.html#POST">POST</a></li><li><a href="global.html#PUT">PUT</a></li><li><a href="global.html#generateJWTToken">generateJWTToken</a></li><li><a href="global.html#listen">listen</a></li><li><a href="global.html#movieSchema">movieSchema</a></li><li><a href="global.html#userSchema">userSchema</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Sep 11 2023 12:11:21 GMT-0700 (Mountain Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
